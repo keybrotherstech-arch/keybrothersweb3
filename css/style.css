@@ -184,6 +184,18 @@ body {
   inset: 0;
 }
 
+/* Eski/dar cihazlarda Spline yerine hafif arka plan (kasma önleme) */
+.hero-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, var(--color-accent-glow), transparent 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, #0d0d14 50%, var(--color-bg) 100%);
+  pointer-events: none;
+}
+
 /* Arka plan: hafif mor-mavi gradient + koyuluk; metnin okunaklı kalması için üst katman */
 .hero-bg {
   position: absolute;
@@ -326,6 +338,26 @@ body {
   width: 100%;
   height: 100%;
   min-height: 420px;
+}
+
+/* Eski/dar cihazlarda Spline yerine hafif kutu (kasma önleme) */
+.embed-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
+  pointer-events: none;
+}
+
+/* spline-disabled: Spline script yüklenmez, 3D gizlenir, fallback gösterilir */
+.spline-disabled .hero-spline,
+.spline-disabled .embed-wrap > spline-viewer {
+  display: none !important;
+}
+.spline-disabled .hero-fallback,
+.spline-disabled .embed-fallback {
+  display: block !important;
 }
 
 /* HAKKIMIZDA: Spline üzerinde sol altta "kodluyoruz" etiketi */

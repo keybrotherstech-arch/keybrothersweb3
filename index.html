@@ -24,8 +24,25 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" />
   <!-- Favicon: sekme ikonu (logo kullanılabilir) -->
   <link rel="icon" type="image/png" href="assets/logo.png" />
-  <!-- Spline 3D viewer: hero robotu + MacBook bölümü (tek script, 1.12.57) -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js"></script>
+  <!-- Spline: erişilebilirlik için sadece "az hareket" tercihinde kapatılır; script sayfa yüklendikten sonra yüklenir (telefonda da açılır, kasma azalır) -->
+  <script>
+    (function() {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        document.documentElement.classList.add('spline-disabled');
+        return;
+      }
+      function loadSpline() {
+        var s = document.createElement('script');
+        s.type = 'module';
+        s.src = 'https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js';
+        document.head.appendChild(s);
+      }
+      if (document.readyState === 'complete') loadSpline();
+      else if (window.requestIdleCallback) window.requestIdleCallback(loadSpline, { timeout: 2500 });
+      else window.addEventListener('load', loadSpline);
+    })();
+  </script>
 </head>
 <body>
   <!-- ========== ÜST MENÜ (NAVİGASYON) ========== -->
@@ -56,11 +73,11 @@
   <main>
     <!-- ========== HERO BÖLÜMÜ (İlk ekran, karşılama) ========== -->
     <section id="hero" class="hero">
-      <!-- Spline 3D arka plan: Spline'da sahneyi aç > Export / Share > Code/Export > scene linkini kopyala; url="" içine yapıştır -->
+      <!-- Spline 3D arka plan: eski/dar cihazlarda gizlenir, yerine hero-fallback gösterilir -->
       <div class="hero-spline" aria-hidden="true">
-        <!-- events-target="global" ile fare hareketi sahne dışından da iletilir; robot kafası "Look At" ile fareyi takip edebilir -->
         <spline-viewer url="https://prod.spline.design/gK3yKy79qNWocXVv/scene.splinecode" events-target="global"></spline-viewer>
       </div>
+      <div class="hero-fallback" aria-hidden="true"></div>
       <div class="hero-bg"></div>
       <div class="hero-overlay-text">geleceğiniz bizim ellerimizde</div>
       <div class="container hero-content">

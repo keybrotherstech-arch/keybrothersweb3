@@ -14,11 +14,20 @@
   <meta property="og:image" content="https://keybrotherstech.com/assets/logo.png" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="assets/logo.png" />
-  <!-- Spline kullanacaksan bu script kalmalı; kullanmayacaksan bu satırı silebilirsin -->
-  <script
-    type="module"
-    src="https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js"
-  ></script>
+  <script>
+    (function() {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) { document.documentElement.classList.add('spline-disabled'); return; }
+      function loadSpline() {
+        var s = document.createElement('script'); s.type = 'module';
+        s.src = 'https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js';
+        document.head.appendChild(s);
+      }
+      if (document.readyState === 'complete') loadSpline();
+      else if (window.requestIdleCallback) window.requestIdleCallback(loadSpline, { timeout: 2500 });
+      else window.addEventListener('load', loadSpline);
+    })();
+  </script>
 </head>
 <body class="inner-page">
   <header class="header">
@@ -46,6 +55,7 @@
       <div class="container">
         <div class="embed-wrap">
           <spline-viewer url="https://prod.spline.design/aZImrwAFi3JFy4Yq/scene.splinecode"></spline-viewer>
+          <div class="embed-fallback" aria-hidden="true"></div>
           <div class="spline-watermark-cover" aria-hidden="true"></div>
         </div>
       </div>
