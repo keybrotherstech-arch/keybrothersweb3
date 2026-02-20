@@ -18,17 +18,24 @@
   <meta property="og:description" content="KeyBrothers Tech - SaaS, yapay zeka, otomasyon ve dijital ürün geliştirme. Güvenlik, ölçeklenebilirlik ve sürdürülebilirlik odaklı çözümler." />
   <meta property="og:url" content="https://keybrotherstech.com/" />
   <meta property="og:image" content="https://keybrotherstech.com/assets/logo.png" />
+  <!-- Ön bağlantı: font ve Spline CDN için daha hızlı yükleme -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
   <!-- Stil dosyası -->
   <link rel="stylesheet" href="css/style.css" />
-  <!-- Ana sayfadaki slogan için el yazısı imza fontu -->
+  <!-- Ana sayfadaki slogan için el yazısı imza fontu (display=swap: metin hemen görünür, font gelene kadar fallback) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" />
   <!-- Favicon: sekme ikonu (logo kullanılabilir) -->
   <link rel="icon" type="image/png" href="assets/logo.png" />
-  <!-- Spline: erişilebilirlik için sadece "az hareket" tercihinde kapatılır; script sayfa yüklendikten sonra yüklenir (telefonda da açılır, kasma azalır) -->
+  <!-- Spline: düşük/eski cihazlarda hiç yüklenmez (kasma önleme). Az hareket, dar ekran veya zayıf donanım = fallback gösterilir. -->
   <script>
     (function() {
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) {
+      var smallScreen = window.matchMedia('(max-width: 1024px)').matches;
+      var lowCores = typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 2;
+      var lowMemory = typeof navigator.deviceMemory === 'number' && navigator.deviceMemory < 4;
+      if (reduced || smallScreen || lowCores || lowMemory) {
         document.documentElement.classList.add('spline-disabled');
         return;
       }
@@ -50,7 +57,7 @@
     <nav class="nav container">
       <!-- Logo: ana sayfaya gider -->
       <a href="index.html" class="nav-logo">
-        <img src="assets/logo.png" alt="KeyBrothers Tech logosu" class="nav-logo-img" />
+        <img src="assets/logo.png" alt="KeyBrothers Tech logosu" class="nav-logo-img" decoding="async" width="36" height="36" />
         <span class="nav-logo-text">KeyBrothers Tech</span>
       </a>
       <!-- Menü: her öğe ayrı sayfaya gider; Blog şimdilik pasif -->
@@ -77,8 +84,14 @@
       <div class="hero-spline" aria-hidden="true">
         <spline-viewer url="https://prod.spline.design/gK3yKy79qNWocXVv/scene.splinecode" events-target="global"></spline-viewer>
       </div>
-      <div class="hero-fallback" aria-hidden="true"></div>
+      <div class="hero-fallback" aria-hidden="true">
+        <video class="hero-fallback-video" autoplay loop muted playsinline aria-hidden="true">
+          <source src="assets/hero-bg.mp4" type="video/mp4" />
+          <source src="assets/hero-bg.webm" type="video/webm" />
+        </video>
+      </div>
       <div class="hero-bg"></div>
+      <div class="spline-watermark-cover" aria-hidden="true"></div>
       <div class="hero-overlay-text">geleceğiniz bizim ellerimizde</div>
       <div class="container hero-content">
         <h1 class="hero-title">KeyBrothers Tech.</h1>
@@ -153,7 +166,7 @@
       <!-- Sol blok: logo ve kısa açıklama -->
       <div class="footer-brand">
         <a href="index.html" class="footer-logo">
-          <img src="assets/logo.png" alt="KeyBrothers Tech logosu" class="footer-logo-img" />
+          <img src="assets/logo.png" alt="KeyBrothers Tech logosu" class="footer-logo-img" decoding="async" width="36" height="36" />
           <span class="footer-logo-text">KeyBrothers Tech</span>
         </a>
         <p class="footer-desc">

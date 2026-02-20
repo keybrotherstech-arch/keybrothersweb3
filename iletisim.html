@@ -14,10 +14,17 @@
   <meta property="og:image" content="https://keybrotherstech.com/assets/logo.png" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="assets/logo.png" />
+  <!-- Spline: düşük/eski cihazlarda yüklenmez (kasma önleme). Aynı kurallar ana sayfa ile uyumlu. -->
   <script>
     (function() {
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) { document.documentElement.classList.add('spline-disabled'); return; }
+      var smallScreen = window.matchMedia('(max-width: 1024px)').matches;
+      var lowCores = typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 2;
+      var lowMemory = typeof navigator.deviceMemory === 'number' && navigator.deviceMemory < 4;
+      if (reduced || smallScreen || lowCores || lowMemory) {
+        document.documentElement.classList.add('spline-disabled');
+        return;
+      }
       function loadSpline() {
         var s = document.createElement('script'); s.type = 'module';
         s.src = 'https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js';
@@ -57,7 +64,11 @@
         <!-- İletişim sayfasında Dünya animasyonlu Spline sahnesi -->
         <div class="embed-wrap contact-embed">
           <spline-viewer url="https://prod.spline.design/HHiRFwId4InzksKm/scene.splinecode"></spline-viewer>
-          <div class="embed-fallback" aria-hidden="true"></div>
+          <div class="embed-fallback" aria-hidden="true">
+            <video class="embed-fallback-video" autoplay loop muted playsinline aria-hidden="true">
+              <source src="assets/iletisim-bg.mp4" type="video/mp4" />
+            </video>
+          </div>
           <div class="spline-watermark-cover" aria-hidden="true"></div>
         </div>
         <div class="contact-content">

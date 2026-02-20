@@ -66,6 +66,18 @@ body {
   border-bottom: 1px solid var(--border-subtle);
 }
 
+/* Düşük performanslı / mobil cihazlarda blur kapat (kasma önleme). Spline kapalıysa veya dar ekranda düz arka plan. */
+@media (max-width: 1024px) {
+  .header {
+    backdrop-filter: none;
+    background: rgba(10, 10, 15, 0.98);
+  }
+}
+.spline-disabled .header {
+  backdrop-filter: none;
+  background: rgba(10, 10, 15, 0.98);
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -173,6 +185,7 @@ body {
   z-index: 0;
   min-height: 100%;
   pointer-events: none;
+  contain: layout paint; /* Optimizasyon: layout/paint etkisini bu alanla sınırla */
 }
 
 .hero-spline spline-viewer {
@@ -184,7 +197,7 @@ body {
   inset: 0;
 }
 
-/* Eski/dar cihazlarda Spline yerine hafif arka plan (kasma önleme) */
+/* Eski/dar cihazlarda Spline yerine hafif arka plan veya video (kasma önleme) */
 .hero-fallback {
   display: none;
   position: absolute;
@@ -193,6 +206,16 @@ body {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, var(--color-accent-glow), transparent 60%),
     linear-gradient(180deg, var(--color-bg) 0%, #0d0d14 50%, var(--color-bg) 100%);
+  pointer-events: none;
+}
+
+/* Fallback içinde video: assets/hero-bg.mp4 (veya .webm) varsa oynar; yoksa sadece gradient görünür */
+.hero-fallback-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
 }
 
@@ -340,13 +363,22 @@ body {
   min-height: 420px;
 }
 
-/* Eski/dar cihazlarda Spline yerine hafif kutu (kasma önleme) */
+/* Eski/dar cihazlarda Spline yerine video veya gradient (kasma önleme) */
 .embed-fallback {
   display: none;
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
+  pointer-events: none;
+}
+
+.embed-fallback-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
 }
 
