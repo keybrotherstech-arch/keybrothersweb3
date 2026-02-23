@@ -18,16 +18,21 @@
   <meta property="og:description" content="KeyBrothers Tech - SaaS, yapay zeka, otomasyon ve dijital ürün geliştirme. Güvenlik, ölçeklenebilirlik ve sürdürülebilirlik odaklı çözümler." />
   <meta property="og:url" content="https://keybrotherstech.com/" />
   <meta property="og:image" content="https://keybrotherstech.com/assets/logo.png" />
-  <!-- Ön bağlantı: font ve Spline CDN için daha hızlı yükleme -->
+  <!-- Ön bağlantı: font ve Spline CDN için daha hızlı yükleme (Mac/desktop'ta robot daha erken gelir) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="preconnect" href="https://prod.spline.design" crossorigin />
+  <link rel="modulepreload" href="https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js" />
   <!-- Stil dosyası -->
   <link rel="stylesheet" href="css/style.css" />
   <!-- Ana sayfadaki slogan için el yazısı imza fontu (display=swap: metin hemen görünür, font gelene kadar fallback) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" />
-  <!-- Favicon: sekme ikonu (logo kullanılabilir) -->
-  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <!-- Favicon ve uygulama ikonları (Google/mobil) -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <!-- Spline: düşük/eski cihazlarda hiç yüklenmez (kasma önleme). Az hareket, dar ekran veya zayıf donanım = fallback gösterilir. -->
   <script>
     (function() {
@@ -46,8 +51,8 @@
         document.head.appendChild(s);
       }
       if (document.readyState === 'complete') loadSpline();
-      else if (window.requestIdleCallback) window.requestIdleCallback(loadSpline, { timeout: 2500 });
-      else window.addEventListener('load', loadSpline);
+      else if (document.readyState === 'interactive') loadSpline();
+      else document.addEventListener('DOMContentLoaded', loadSpline);
     })();
   </script>
 </head>
