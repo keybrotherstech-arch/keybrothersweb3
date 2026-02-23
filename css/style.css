@@ -421,7 +421,7 @@ body {
   pointer-events: none;
 }
 
-/* Sağ alttaki "Built with Spline" benzeri yazıyı kapatmak için örtü */
+/* Sağ alttaki "Built with Spline" benzeri yazıyı kapatmak için örtü (sadece masaüstü; mobilde gizli) */
 .spline-watermark-cover {
   position: absolute;
   bottom: 0;
@@ -431,6 +431,12 @@ body {
   background: #0a0a0f;
   z-index: 9;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .spline-watermark-cover {
+    display: none;
+  }
 }
 
 /* ---------- HAKKIMIZDA (metin) ---------- */
